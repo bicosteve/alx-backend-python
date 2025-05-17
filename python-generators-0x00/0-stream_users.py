@@ -1,3 +1,6 @@
+# 1. generator that streams rows from an SQL database
+
+
 import mysql.connector
 
 

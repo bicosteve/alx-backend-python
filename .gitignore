@@ -1,1 +1,6 @@
 python-generators-0x00/data/data.csv
+Pipfile.lock
+.venv
+__pycache__/
+*.pyc 
+*.pyd
