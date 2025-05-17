@@ -47,7 +47,7 @@ def paginate_users(page_size, offset):
             connection.close()
 
 
-def lazypaginate(pagesize):
+def lazy_paginate(page_size):
     """
     This functions lazily paginate user data
     pagesize is th enumber of user to fetch per page
@@ -57,8 +57,13 @@ def lazypaginate(pagesize):
     offset = 0
 
     while True:
-        users = paginate_users(pagesize, offset)
+        users = paginate_users(page_size, offset)
         if not users:
             break
         yield users
-        offset += pagesize
+        offset += page_size
+
+
+for page in lazy_paginate(100):
+    for user in page:
+        print(user)
