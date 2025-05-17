@@ -12,8 +12,6 @@ Instructions:
         You must use the yield generator
         Prototype:
         def lazy_paginate(page_size)
-
-
 """
 
 
