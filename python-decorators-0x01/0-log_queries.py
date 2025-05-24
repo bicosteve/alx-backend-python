@@ -22,6 +22,7 @@ def log_queries(orignal_func):
     def wrapper(*args, **kwargs):
         query = args[0]
         logging.info(f"query ran {query}")
+        print(f"query ran {query}")
         return orignal_func(*args, **kwargs)
 
     return wrapper
