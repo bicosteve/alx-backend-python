@@ -15,14 +15,14 @@ import logging
 from datetime import datetime
 
 
-def log_queries(original_func):
+def log_queries(orignal_func):
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(message)s")
     logger = logging.getLogger(__name__)
 
     def wrapper(*args, **kwargs):
         query = args[0]
         logging.info(f"query ran {query}")
-        return original_func(*args, **kwargs)
+        return orignal_func(*args, **kwargs)
 
     return wrapper
 
