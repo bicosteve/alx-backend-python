@@ -32,4 +32,6 @@ def get_user_by_id(conn, user_id: int) -> dict:
     return cursor.fetch_one()
 
 
-user = get_user_by_id(user_id=1)
+conn = sqlite3.connection("my_db.db")
+
+user = get_user_by_id(conn, user_id=1)
