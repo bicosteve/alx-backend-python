@@ -12,10 +12,12 @@ Prototype: def log_queries()
 import sqlite3
 import functools
 import logging
+from datetime import datetime
 
 
 def log_queries(original_func):
-    logging.basicConfig(format="%(levelname)s | %(asctime)s")
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(message)s")
+    logger = logging.getLogger(__name__)
 
     def wrapper(*args, **kwargs):
         query = args[0]
