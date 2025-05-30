@@ -1,6 +1,7 @@
 # 0. Parameterize a unit test
 
-```In this task you will write the first unit test for utils.access_nested_map.
+```
+In this task you will write the first unit test for utils.access_nested_map.
 
 Create a TestAccessNestedMap class that inherits from unittest.TestCase.
 
@@ -28,5 +29,14 @@ nested_map={}, path=("a",)
 nested_map={"a": 1}, path=("a", "b")
 
 Also make sure that the exception message is as expected.
+
+```
+
+# 2. Mock HTTP calls
+
+```
+Define the TestGetJson(unittest.TestCase) class and implement the TestGetJson.test_get_json method to test that utils.get_json returns the expected result.
+
+We don’t want to make any actual external HTTP calls. Use unittest.mock.patch to patch requests.get. Make sure it returns a Mock object with a json method that returns test_payload which you parametrize alongside the test_url that you will pass to get_json with the following inputs.
 
 ```
