@@ -108,7 +108,8 @@ class TestMemoize(unittest.TestCase):
 
             """
             1. First call to a_property should call a_method
-            2. Second call to a_property should use cached value not call a_method
+            2. Second call to a_property should use cached value not 
+                call a_method
             3. Assert both results are correct
             """
 
