@@ -8,6 +8,7 @@ pymysql = "*"
 requests = "*"
 mysql-connector-python = "*"
 parameterized = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
