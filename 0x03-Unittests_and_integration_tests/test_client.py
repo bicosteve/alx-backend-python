@@ -76,6 +76,20 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
+    def test_public_repos(self):
+        """
+        Test that GithubOrgClient.public_repos returns expected repo names.
+        """
+        client = GithubOrgClient("google")
+        self.assertEqual(client.public_repos(), self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        """
+        Test that GithubOrgClient.public_repos filters by license correctly.
+        """
+        client = GithubOrgClient("google")
+        self.assertEqual(client.public_repos(license="apache-2.0"), self.apache2_repos)
+
 
 @parameterized_class([{"org_payload": TEST_PAYLOAD}])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
@@ -148,17 +162,3 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.assertEqual(len(calls), 2)
         self.assertEqual(calls[0].args[0], "https://api.github.com/orgs/google")
         self.assertEqual(calls[1].args[0], "https://api.github.com/orgs/google/repos")
-
-    def test_public_repos(self):
-        """
-        Test that GithubOrgClient.public_repos returns expected repo names.
-        """
-        client = GithubOrgClient("google")
-        self.assertEqual(client.public_repos(), self.expected_repos)
-
-    def test_public_repos_with_license(self):
-        """
-        Test that GithubOrgClient.public_repos filters by license correctly.
-        """
-        client = GithubOrgClient("google")
-        self.assertEqual(client.public_repos(license="apache-2.0"), self.apache2_repos)
