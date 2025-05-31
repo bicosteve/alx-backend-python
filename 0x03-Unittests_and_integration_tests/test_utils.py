@@ -44,15 +44,20 @@ class TestAccessNestedMap(unittest.TestCase):
 
 class TestGetJson(unittest.TestCase):
     """
-    Tests the test_get_json() method to make sure
-    it returns expected results.
+    Tests the utils.get_json function.
     """
 
     @patch("utils.requests.get")
     def test_get_json(self, mock_get):
         """
-        Test the utils.get_json function returns the expected
-        result without making external http calls
+        Test that utils.get_json returns the expected result
+        without making external HTTP calls.
+
+        This method uses unittest.mock.patch to mock 'requests.get'.
+        It parametrizes test URLs and payloads to ensure the function
+        behaves correctly for different inputs.
+        It asserts that the mocked 'get' method is called exactly once
+        with the correct URL and that the output matches the expected payload.
         """
         test_cases = [
             ("http://example.com", {"payload": True}),
@@ -73,48 +78,27 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
-    """
-    This class implements test for utils.memoize function
-    """
+    """Unit tests for the memoize decorator."""
 
     def test_memoize(self):
-        """
-        Tests that a method decorated with @memoize calls its
-        underlying logic
-        only once, caching the result for subsequent calls.
-        """
+        """Test that a memoized method is only called once."""
 
         class TestClass:
-            """
-            Tests the behaviour of the memoize decorator
-            """
+            """Helper class to test memoization behaviour."""
 
             def a_method(self):
-                """
-                This method will be mocked to control its behaviour
-                """
+                """Method to be mocked during test."""
                 return 42
 
             @memoize
             def a_property(self):
-                """
-                This method calls the a_method() and is decorated
-                with memoize and retuns the a_method()
-                """
+                """Memoized property that calls a_method()."""
                 return self.a_method()
 
         with patch.object(TestClass, "a_method", return_value=42) as mck_methd:
-            object = TestClass()
-
-            """
-            1. First call to a_property should call a_method
-            2. Second call to a_property should use cached value not 
-                call a_method
-            3. Assert both results are correct
-            """
-
-            result_one = object.a_property
-            result_two = object.a_property
+            obj = TestClass()
+            result_one = obj.a_property
+            result_two = obj.a_property
 
             self.assertEqual(result_one, 42)
             self.assertEqual(result_two, 42)
