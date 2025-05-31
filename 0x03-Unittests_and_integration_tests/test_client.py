@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import unittest
-from unittest.mock import patch, PropertyMock, MagicMock
+from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
@@ -79,27 +79,100 @@ class TestGithubOrgClient(unittest.TestCase):
 
 @parameterized_class([{"org_payload": TEST_PAYLOAD}])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """Integration test for GithubOrgClient.public_repos."""
+    """Integration test for GithubOrgClient.public_repos.This class mocks external HTTP requests to provide predefined payloads."""
+
+    org_payload: dict
+    repos_payload: list
+    expected_repos: list
+    apache2_repos: list
 
     @classmethod
     def setUpClass(cls):
-        """Set up patcher for requests.get and mock .json responses."""
+        """
+        Set up the class-level mocks for requests.get.
+        This method is called once before tests in the class are run.
+        """
+        cls.get_patcher = patch("requests.get")
+        cls.mock_get = cls.get_patcher.start()
 
-        cls.get_patcher = patch("utils.requests.get")
-        mocked_get = cls.get_patcher.start()
-
-        # Create a side_effect function to match URLs
-        def side_effect(url):
-            mock_response = MagicMock()
-            if url == f"https://api.github.com/orgs/google":
+        def side_effect_func(url):
+            """Define the side_effect for the mocked requests.get.This function will return different Mock objects based on the URL"""
+            if url == "https://api.github.com/orgs/google":
+                mock_response = Mock()
                 mock_response.json.return_value = cls.org_payload
-            elif url == cls.org_payload["repos_url"]:
+                return mock_response
+            elif url == "https://api.github.com/orgs/google/repos":
+                mock_response = Mock()
                 mock_response.json.return_value = cls.repos_payload
-            return mock_response
+                return mock_response
+            return Mock()  # Default mock for any other URL if needed
 
-        mocked_get.side_effect = side_effect
+        cls.mock_get.side_effect = side_effect_func
 
     @classmethod
     def tearDownClass(cls):
-        """Tear down patcher."""
+        """
+        Stop the patcher after all tests in the class have run.
+        """
         cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """
+        Tests the public_repos method without a license filter.Ensure the mock is reset for this specific test case if needed (though side_effect typically handles distinct calls well)
+        """
+
+        self.mock_get.reset_mock()
+
+        client = GithubOrgClient("google")
+        result = client.public_repos()
+
+        self.assertEqual(result, self.expected_repos)
+        # Verify that requests.get was called for both org_data and repos_payload
+        calls = self.mock_get.call_args_list
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0].args[0], "https://api.github.com/orgs/google")
+        self.assertEqual(calls[1].args[0], "https://api.github.com/orgs/google/repos")
+
+    def test_public_repos_with_license(self):
+        """
+        Tests the public_repos method with a license filter.
+        """
+        self.mock_get.reset_mock()  # Reset mock calls from previous tests
+
+        client = GithubOrgClient("google")
+        result = client.public_repos("apache-2.0")
+
+        self.assertEqual(result, self.apache2_repos)
+        # Verify calls again
+        calls = self.mock_get.call_args_list
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0].args[0], "https://api.github.com/orgs/google")
+        self.assertEqual(calls[1].args[0], "https://api.github.com/orgs/google/repos")
+
+
+# @parameterized_class([{"org_payload": TEST_PAYLOAD}])
+# class TestIntegrationGithubOrgClient(unittest.TestCase):
+#     """Integration test for GithubOrgClient.public_repos."""
+
+#     @classmethod
+#     def setUpClass(cls):
+#         """Set up patcher for requests.get and mock .json responses."""
+
+#         cls.get_patcher = patch("utils.requests.get")
+#         mocked_get = cls.get_patcher.start()
+
+#         # Create a side_effect function to match URLs
+#         def side_effect(url):
+#             mock_response = MagicMock()
+#             if url == f"https://api.github.com/orgs/google":
+#                 mock_response.json.return_value = cls.org_payload
+#             elif url == cls.org_payload["repos_url"]:
+#                 mock_response.json.return_value = cls.repos_payload
+#             return mock_response
+
+#         mocked_get.side_effect = side_effect
+
+#     @classmethod
+#     def tearDownClass(cls):
+#         """Tear down patcher."""
+#         cls.get_patcher.stop()
