@@ -45,10 +45,8 @@ class TestGetJson(unittest.TestCase):
     Tests the test_get_json() method to make sure it returns expected results.
     """
 
-    # replaces requests.get in th utils with mock object during the test
     @patch("utils.requests.get")
     def test_get_json(self, mock_get):
-        # mock_get is the mocked version of requests.get, passed in by @patch
         """
         Test the utils.get_json function returns the expected result without making external http calls
         """
@@ -58,13 +56,9 @@ class TestGetJson(unittest.TestCase):
         ]
 
         for test_url, test_payload in test_cases:
-
             mock_response = Mock()
-            # this object will simulate http response object returned by requests.get
             mock_response.json.return_value = test_payload
-            # configure .json() of the mock response to return the expected JSON `test_payload`
             mock_get.return_value = mock_response
-            # sets the mocked requests.get to return the mock_response when called
 
             result = get_json(test_url)
 
