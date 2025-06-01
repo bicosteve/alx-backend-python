@@ -46,6 +46,11 @@ class ConversationSerialzer(serializers.Serializer):
     participants = UserSerializer(many=True, read_only=True)
     messages = MessageSerializer(many=True, read_only=True)
 
+    message_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Conversation
         fields = "__all__"
+
+    def get_message_count(self, object):
+        return object.messages.count()
