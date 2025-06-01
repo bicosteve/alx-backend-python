@@ -2,9 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-from rest_framework import viewsets, permissions, status
+
+from rest_framework import viewsets, permissions, status, filters
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
+from django_filters.rest_framework import DjangoFilterBackend
 
 from chats.serializers import UserSerializer, ConversationSerialzer, MessageSerializer
 from chats.models import User, Conversation, Message
@@ -14,6 +17,10 @@ from chats.models import User, Conversation, Message
 class ConversationViewSet(viewsets.ModelViewSet):
     query = Conversation.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ConversationSerialzer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ["participants__email"]
+    filterset_fields = ["participants"]
 
     def get_queryset(self):
         return Conversation.objects.filter(participants=self.request.user)
