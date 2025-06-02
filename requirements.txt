@@ -3,3 +3,4 @@ requests
 mysql-connector-python
 parameterized
 djangorestframework
+djangorestframework-simplejwt

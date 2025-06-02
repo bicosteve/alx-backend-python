@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+drf-nested-routers = "*"
 pymysql = "*"
 requests = "*"
 mysql-connector-python = "*"
 parameterized = "*"
 djangorestframework = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

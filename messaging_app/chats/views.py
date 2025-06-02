@@ -3,11 +3,13 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 
-from rest_framework import viewsets, permissions, status, filters
+from rest_framework import viewsets, permissions, status, filters, authentication
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from django_filters.rest_framework import DjangoFilterBackend
+
+# from django_filters.rest_framework import DjangoFilterBackend
+
 
 from chats.serializers import UserSerializer, ConversationSerialzer, MessageSerializer
 from chats.models import User, Conversation, Message
@@ -16,14 +18,18 @@ from chats.models import User, Conversation, Message
 # Create your views here.
 class ConversationViewSet(viewsets.ModelViewSet):
     query = Conversation.objects.all()
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        authentication.BasicAuthentication,
+    ]
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ConversationSerialzer
-    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    # filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ["participants__email"]
     filterset_fields = ["participants"]
 
-    def get_queryset(self):
-        return Conversation.objects.filter(participants=self.request.user)
+    def get_queryset(self, request):
+        return Conversation.objects.filter(participants=request.user)
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -44,15 +50,19 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        authentication.BasicAuthentication,
+    ]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_queryset(self):
-        conversation_id = self.request.content_params.get("conversation")
+    def get_queryset(self, request):
+        conversation_id = request.query_param.get("conversation")
         return Message.objects.filter(
             conversation_id=conversation_id, participants=self.request.user
         )
 
-    def perform_create(self, serializer):
+    def perform_create(self, request, serializer):
         conversation = serializer.validated_data["conversation"]
         if self.request.user not in conversation.participants.all():
             raise BaseException("Not a participant of a conversation")
