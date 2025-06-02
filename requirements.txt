@@ -4,3 +4,4 @@ mysql-connector-python
 parameterized
 djangorestframework
 djangorestframework-simplejwt
+django-filter

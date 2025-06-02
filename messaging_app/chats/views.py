@@ -12,8 +12,9 @@ from rest_framework.exceptions import PermissionDenied
 
 
 from chats.serializers import UserSerializer, ConversationSerialzer, MessageSerializer
-from chats.models import User, Conversation, Message
-from chats.permissions import IsParticipantOfConversation
+from .models import User, Conversation, Message
+from .permissions import IsParticipantOfConversation
+from .filters import MessageFilter
 
 
 # Create your views here.
@@ -56,6 +57,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         authentication.BasicAuthentication,
     ]
     permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
+    filter_class = MessageFilter
 
     def get_queryset(self, request):
         conversation_id = request.query_param.get("conversation")

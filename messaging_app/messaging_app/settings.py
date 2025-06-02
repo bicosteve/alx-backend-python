@@ -41,6 +41,9 @@ REST_FRAMEWORK = {
         "rest_fraework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
+    "DEAULT_PAGINATION_CLASS": "rest_framework.pagination.PaginNumberPagination",
+    "PAGE_SIZE": 20,
+    "DAFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend"),
 }
 
 SIMPLE_JWT = {

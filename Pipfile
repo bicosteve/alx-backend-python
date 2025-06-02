@@ -5,12 +5,14 @@ name = "pypi"
 
 [packages]
 drf-nested-routers = "*"
+django-filters = "*"
 pymysql = "*"
 requests = "*"
 mysql-connector-python = "*"
 parameterized = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
+django-filter = "*"
 
 [dev-packages]
 
