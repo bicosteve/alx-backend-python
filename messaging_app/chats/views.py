@@ -13,7 +13,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from chats.serializers import UserSerializer, ConversationSerialzer, MessageSerializer
 from chats.models import User, Conversation, Message
-from chats.permissions import IsPermittedToConverse
+from chats.permissions import IsParticipantOfConversation
 
 
 # Create your views here.
@@ -23,7 +23,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
         authentication.SessionAuthentication,
         authentication.BasicAuthentication,
     ]
-    permission_classes = [permissions.IsAuthenticated, IsPermittedToConverse]
+    permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
     serializer_class = ConversationSerialzer
     # filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ["participants__email"]
@@ -55,7 +55,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         authentication.SessionAuthentication,
         authentication.BasicAuthentication,
     ]
-    permission_classes = [permissions.IsAuthenticated, IsPermittedToConverse]
+    permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
 
     def get_queryset(self, request):
         conversation_id = request.query_param.get("conversation")

@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsPermittedToConverse(permissions.BasePermission):
+class IsParticipantOfConversation(permissions.BasePermission):
     """Only allow participants to access this conversation"""
 
     def has_permission(self, request, view):
