@@ -6,6 +6,4 @@ __pycache__/
 *.pyd
 0x03-Unittests_and_integration_tests/utils.txt
 .DS_Store
-./manage.py
-messaging_app_1x00/
-chats/
+
