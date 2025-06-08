@@ -6,10 +6,10 @@ from .models import User, Conversation, Message
 
 class UserSerializer(serializers.ModelSerializer):
     user_id = serializers.UUIDField(read_only=True)
-    email = serializers.CharField(blank=False, null=False)
-    phone_number = serializers.CharField(max_length=20)
-    first_name = serializers.CharField(max_length=20)
-    last_name = serializers.CharField(max_length=20)
+    email = serializers.EmailField(required=True)
+    phone_number = serializers.CharField(max_length=20, required=True)
+    first_name = serializers.CharField(max_length=20, required=True)
+    last_name = serializers.CharField(max_length=20, required=True)
     password = serializers.CharField(write_only=True)
 
     class Meta:

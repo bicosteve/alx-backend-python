@@ -1,0 +1,13 @@
+/Users/ke-mbp-b2262/Documents/projects/study/alx/alx-backend-python/Django-Middleware-0x03/messaging_app/settings.py changed, reloading.
+2025-06-08 08:14:51.877196 - User: Not know - Path: /api-auth/api/conversations
+Not Found: /api-auth/api/conversations
+/Users/ke-mbp-b2262/Documents/projects/study/alx/alx-backend-python/Django-Middleware-0x03/chats/urls.py changed, reloading.
+/Users/ke-mbp-b2262/Documents/projects/study/alx/alx-backend-python/Django-Middleware-0x03/messaging_app/urls.py changed, reloading.
+/Users/ke-mbp-b2262/Documents/projects/study/alx/alx-backend-python/Django-Middleware-0x03/chats/urls.py changed, reloading.
+/Users/ke-mbp-b2262/Documents/projects/study/alx/alx-backend-python/Django-Middleware-0x03/chats/urls.py changed, reloading.
+2025-06-08 08:23:01.510624 - User: Not know - Path: /api/conversations
+2025-06-08 08:23:01.524166 - User: Not know - Path: /api/conversations/
+Forbidden: /api/conversations/
+2025-06-08 08:23:13.216666 - User: Not know - Path: /api/messages
+2025-06-08 08:23:13.228435 - User: Not know - Path: /api/messages/
+Forbidden: /api/messages/
