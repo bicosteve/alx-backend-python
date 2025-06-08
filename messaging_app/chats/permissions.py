@@ -10,4 +10,8 @@ class IsParticipantOfConversation(permissions.BasePermission):
 
     def has_object_permission(self, request, view, object):
         """Check if a user is a participant in the conversation"""
+        if request.method in permissions.SAFE_METHODS:
+            return object.participants.filter(id=request.user.id).exists()
+
+        # allow write access [PUT, PATCH,DELETE] participants
         return object.participants.filter(id=request.user.id).exists()

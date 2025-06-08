@@ -32,12 +32,12 @@ class ConversationViewSet(viewsets.ModelViewSet):
     filterset_fields = ["participants"]
 
     def get_queryset(self, request):
-        conversation_id = self.kwargs.get("pk")
+        conv_id = self.kwargs.get("pk")
         conversation = super().get_object()
 
-        if not user_can_access_conversation(self.request.user, conversation_id):
-            raise PermissionDenied(
-                "You do not have permission to access this conversation"
+        if not user_can_access_conversation(self.request.user, conv_id):
+            return Response(
+                {"msg": "You do not have permissions"}, status=status.HTTP_403_FORBIDDEN
             )
         return conversation
 
@@ -74,7 +74,9 @@ class MessageViewSet(viewsets.ModelViewSet):
         )
 
         if not user_can_access_message(self.request.user, conversation_id):
-            raise PermissionDenied("You do not have permission for these messages")
+            return Response(
+                {"msg": "You do not have permissions"}, status=status.HTTP_403_FORBIDDEN
+            )
 
         return messages
 
