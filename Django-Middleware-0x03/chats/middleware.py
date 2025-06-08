@@ -20,7 +20,7 @@ class RequestLoggingMiddleware:
         return response
 
 
-class RestrictAccesByTimeMiddleware:
+class RestrictAccessByTimeMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -72,7 +72,7 @@ class OffensiveLanguageMiddleware:
         return self.get_response(request)
 
 
-class RolePermissionMiddleware:
+class RolepermissionMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
