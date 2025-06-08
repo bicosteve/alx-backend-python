@@ -3,20 +3,15 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 
-from rest_framework import viewsets, permissions, status, filters, authentication
+from rest_framework import viewsets, permissions, status, authentication
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
 
 
 from .auth import user_can_access_conversation, user_can_access_message
 from .filters import MessageFilter
 from .pagination import MessagePagination
-
-# from django_filters.rest_framework import DjangoFilterBackend
-
-
-from chats.serializers import UserSerializer, ConversationSerialzer, MessageSerializer
+from chats.serializers import ConversationSerialzer, MessageSerializer
 from .models import User, Conversation, Message
 from .permissions import IsParticipantOfConversation
 from .filters import MessageFilter
