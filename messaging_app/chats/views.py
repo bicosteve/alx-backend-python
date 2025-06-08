@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
+from .auth import user_can_access_conversation, user_can_access_message
+
 # from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -26,12 +28,18 @@ class ConversationViewSet(viewsets.ModelViewSet):
     ]
     permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
     serializer_class = ConversationSerialzer
-    # filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ["participants__email"]
     filterset_fields = ["participants"]
 
     def get_queryset(self, request):
-        return Conversation.objects.filter(participants=request.user)
+        conversation_id = self.kwargs.get("pk")
+        conversation = super().get_object()
+
+        if not user_can_access_conversation(self.request.user, conversation_id):
+            raise PermissionDenied(
+                "You do not have permission to access this conversation"
+            )
+        return conversation
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -61,9 +69,14 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, request):
         conversation_id = request.query_param.get("conversation")
-        return Message.objects.filter(
+        messages = Message.objects.filter(
             conversation_id=conversation_id, participants=self.request.user
         )
+
+        if not user_can_access_message(self.request.user, conversation_id):
+            raise PermissionDenied("You do not have permission for these messages")
+
+        return messages
 
     def perform_create(self, request, serializer):
         conversation = serializer.validated_data["conversation"]
