@@ -8,7 +8,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
+
 from .auth import user_can_access_conversation, user_can_access_message
+from .filters import MessageFilter
+from .pagination import MessagePagination
 
 # from django_filters.rest_framework import DjangoFilterBackend
 
@@ -66,6 +69,8 @@ class MessageViewSet(viewsets.ModelViewSet):
     ]
     permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
     filter_class = MessageFilter
+    pagination_class = MessagePagination
+    filterset_class = MessageFilter
 
     def get_queryset(self, request):
         conversation_id = request.query_param.get("conversation")
