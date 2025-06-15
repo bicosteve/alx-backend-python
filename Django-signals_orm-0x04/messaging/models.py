@@ -3,6 +3,8 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .managers import UnreadMessagesManager
+
 
 class User(AbstractUser):
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -26,15 +28,17 @@ class Message(models.Model):
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
+    read = models.BooleanField(default=False)
     # self reference for thread msgs
     parent_message = models.ForeignKey(
         "self", mull=True, blank=True, on_delete=models.CASCADE, related_name="replies"
     )
 
+    objects = models.Manager()
+    unreadMsg = UnreadMessagesManager()
+
     def __str__(self):
-        return (
-            f"From {self.sender.email} to {self.receiver.email} - edited {self.edited}"
-        )
+        return f"From {self.sender.email} to {self.receiver.email} snip; {self.content[:30]}"
 
 
 class Notification(models.Model):

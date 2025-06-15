@@ -108,6 +108,16 @@ class MessageViewSet(viewsets.ModelViewSet):
 
         return thread
 
+    def unread_inbox(self, request):
+        user = request.user
+        unread_msgs = (
+            Message.unreadMsg.for_user(user)
+            .only("id", "sender", "content", "timestamp")
+            .select_related("sender")
+        )
+
+        return unread_msgs
+
     def perform_create(self, request, serializer):
         conversation = serializer.validated_data["conversation"]
         if self.request.user not in conversation.participants.all():
