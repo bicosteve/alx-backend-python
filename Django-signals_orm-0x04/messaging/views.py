@@ -111,7 +111,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     def unread_inbox(self, request):
         user = request.user
         unread_msgs = (
-            Message.unreadMsg.for_user(user)
+            Message.unread.for_user(user)
             .only("id", "sender", "content", "timestamp")
             .select_related("sender")
         )

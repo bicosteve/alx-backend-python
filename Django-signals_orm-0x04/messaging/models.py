@@ -35,7 +35,7 @@ class Message(models.Model):
     )
 
     objects = models.Manager()
-    unreadMsg = UnreadMessagesManager()
+    unread = UnreadMessagesManager()
 
     def __str__(self):
         return f"From {self.sender.email} to {self.receiver.email} snip; {self.content[:30]}"
