@@ -27,11 +27,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "Django-Chat",
+    "messaging",
     "rest_framework_simplejwt",
 ]
 
-AUTH_USER_MODEL = "Django-Chat.User"
+AUTH_USER_MODEL = "messaging.User"
 
 
 REST_FRAMEWORK = {

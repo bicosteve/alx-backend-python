@@ -3,7 +3,7 @@ from django.apps import AppConfig
 
 class ChatsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "django_chat"
+    name = "messaging"
 
     def ready(self):
-        import django_chat.signals
+        import messaging.signals
