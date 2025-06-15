@@ -90,11 +90,10 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, request):
         conversation_id = request.query_param.get("conversation")
+        sender = request.user
         message_id = request.query_param.get("message")
         message = (
-            Message.objects.select_related(
-                receiver=request.user, parent_message__isnull=True
-            )
+            Message.objects.filter(receiver=sender, parent_message__isnull=True)
             .select_related("sender", "receiver")
             .prefetch_related("replies__sender", "replies__receiver")
             .get(id=message_id)
