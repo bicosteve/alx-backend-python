@@ -30,4 +30,16 @@ def log_message_edit(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=User)
 def user_post_delete_cleanup(sender, instance, **kwargs):
-    print(f"User {instance.username} deleted")
+    user = instance
+
+    # Delete messeges where the user is sender or receiver
+    msgs = Message.objects.filter(sender=user) | Message.objects.filter(reciever=user)
+    msg_ids = msgs.values_list("id", flat=True)
+
+    # Delete messages (if not handled by CASCADE)
+    msgs.delete()
+
+    # Delete msg edit history
+    MessageHistory.objects.filter(editor=user).delete()
+
+    print(f"User {instance.username} histories deleted")

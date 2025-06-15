@@ -26,7 +26,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.user_id)
 
-    def destroy(self, request, *args, **kwargs):
+    def delete_user(self, request, *args, **kwargs):
         user = self.get_boject()
 
         if user != request.user:
