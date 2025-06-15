@@ -11,7 +11,7 @@ from rest_framework.decorators import action
 from .auth import user_can_access_conversation, user_can_access_message
 from .filters import MessageFilter
 from .pagination import MessagePagination
-from chats.serializers import ConversationSerialzer, MessageSerializer
+from messaging.serializers import ConversationSerialzer, MessageSerializer
 from .models import User, Conversation, Message
 from .permissions import IsParticipantOfConversation
 from .filters import MessageFilter
