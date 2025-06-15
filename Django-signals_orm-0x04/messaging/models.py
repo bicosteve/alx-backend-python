@@ -53,4 +53,4 @@ class MessageHistory(models.Model):
     edited_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Edit history for message {self.message.message_id} edited at {self.edited_at}"
+        return f"Edit history for message {self.message.message_id} edited at {self.edited_at} edited by {self.message.sender.user_id}"
