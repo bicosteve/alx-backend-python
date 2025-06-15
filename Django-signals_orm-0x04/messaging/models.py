@@ -26,6 +26,10 @@ class Message(models.Model):
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
+    # self reference for thread msgs
+    parent_message = models.ForeignKey(
+        "self", mull=True, blank=True, on_delete=models.CASCADE, related_name="replies"
+    )
 
     def __str__(self):
         return (

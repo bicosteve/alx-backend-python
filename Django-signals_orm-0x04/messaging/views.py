@@ -90,8 +90,14 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, request):
         conversation_id = request.query_param.get("conversation")
-        messages = Message.objects.filter(
-            conversation_id=conversation_id, participants=self.request.user
+        message_id = request.query_param.get("message")
+        message = (
+            Message.objects.select_related(
+                receiver=request.user, parent_message__isnull=True
+            )
+            .select_related("sender", "receiver")
+            .prefetch_related("replies__sender", "replies__receiver")
+            .get(id=message_id)
         )
 
         if not user_can_access_message(self.request.user, conversation_id):
@@ -99,10 +105,29 @@ class MessageViewSet(viewsets.ModelViewSet):
                 {"msg": "You do not have permissions"}, status=status.HTTP_403_FORBIDDEN
             )
 
-        return messages
+        thread = self.get_thread(message)
+
+        return thread
 
     def perform_create(self, request, serializer):
         conversation = serializer.validated_data["conversation"]
         if self.request.user not in conversation.participants.all():
             raise BaseException("Not a participant of a conversation")
         serializer.save(sender=self.request.user)
+
+    def get_thread(self, msg):
+        """Recursively fetch message and its replies"""
+        thread = {
+            "id": msg.id,
+            "content": msg.content,
+            "sender": msg.sender.username,
+            "timestamp": msg.timestamp,
+            "replies": [],
+        }
+
+        for reply in (
+            msg.replies.all().select_related("sender").prefetch_related("replies")
+        ):
+            thread["replies"].append(reply)
+
+        return thread
