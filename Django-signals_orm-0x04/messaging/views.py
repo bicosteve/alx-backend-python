@@ -1,9 +1,10 @@
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import logout
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
-
+# DRF
 from rest_framework import viewsets, permissions, status, authentication
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -77,6 +78,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
         return Response({"msg": "user added"}, status=status.HTTP_201_CREATED)
 
 
+@method_decorator(cache_page(60), name="dispatch")
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     authentication_classes = [
@@ -106,7 +108,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
         thread = self.get_thread(message)
 
-        return thread
+        return Response(thread, status.HTTP_200_OK)
 
     def unread_inbox(self, request):
         user = request.user
@@ -116,7 +118,7 @@ class MessageViewSet(viewsets.ModelViewSet):
             .select_related("sender")
         )
 
-        return unread_msgs
+        return Response(unread_msgs, status.HTTP_200_OK)
 
     def perform_create(self, request, serializer):
         conversation = serializer.validated_data["conversation"]
