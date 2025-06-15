@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout
 
 
 from rest_framework import viewsets, permissions, status, authentication
@@ -18,6 +19,26 @@ from .filters import MessageFilter
 
 
 # Create your views here.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.user_id)
+
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_boject()
+
+        if user != request.user:
+            return Response(
+                {"msg": "You only delete your account"}, status.HTTP_400_BAD_REQUEST
+            )
+
+        logout(request)
+        user.delete()
+        return Response({"msg": "Account deleted"}, status.HTTP_204_NO_CONTENT)
+
+
 class ConversationViewSet(viewsets.ModelViewSet):
     query = Conversation.objects.all()
     authentication_classes = [

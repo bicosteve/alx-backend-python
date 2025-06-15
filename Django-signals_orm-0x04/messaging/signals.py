@@ -1,14 +1,16 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
-from .models import Message, Notification, MessageHistory
+from .models import User, Message, Notification, MessageHistory
 
 
+# message send signal
 @receiver(post_save, sender=Message)
 def create_notification_on_new_msg(sender, instance, created, **kwargs):
     if created:
         Notification.objects.create(user=instance.receiver, message=instance)
 
 
+# message edit signal
 @receiver(pre_save, sender=Message)
 def log_message_edit(sender, instance, **kwargs):
     if instance.pk:
@@ -24,3 +26,8 @@ def log_message_edit(sender, instance, **kwargs):
 
             # Set the message as edited
             instance.edited = True
+
+
+@receiver(post_delete, sender=User)
+def user_post_delete_cleanup(sender, instance, **kwargs):
+    print(f"User {instance.username} deleted")
