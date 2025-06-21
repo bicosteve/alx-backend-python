@@ -32,3 +32,28 @@
 
 
 ```
+
+```bash 
+	1. Use Docker Compose for Multi-Container Setup
+
+	Objective: Learn how to manage multiple services using Docker Compose.
+
+	Instructions:
+
+	    Create a docker-compose.yml file at the root of your messaging_app
+
+	    Define two services:
+	        web: for your Django messaging app.
+	        db: for a MySQL database.
+
+	    Set up the db service with environment variables (such as MYSQL_USER, MYSQL_DB, MYSQL_PASSWORD).
+
+	    Configure the settings.py Database variable to connect to the MYSQL database service using environment variables. hint
+
+	    Use Docker Compose to build and run the multi-container setup.
+
+	    Verify that the app can interact with the MYSQL database.
+
+	Nb: do not push your environment variables to github. Ensure they are in a .env file
+
+```

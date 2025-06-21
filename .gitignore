@@ -7,3 +7,5 @@ __pycache__/
 0x03-Unittests_and_integration_tests/utils.txt
 .DS_Store
 
+messaging_app/.env
+.env
