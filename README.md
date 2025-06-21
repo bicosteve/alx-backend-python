@@ -67,3 +67,15 @@
 	docker compose down
 
 ```
+
+```bash
+	2. Persist Data Using Volumes
+
+	Objective: Understand how to use Docker volumes to persist database data.Understand how to use Docker volumes to persist database data.
+
+	Instructions:
+
+	    Modify the docker-compose.yml file to add a volume for the MYSQL service, ensuring that the database data is persisted across container restarts.
+
+
+```
