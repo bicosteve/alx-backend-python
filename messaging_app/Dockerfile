@@ -1,0 +1,20 @@
+FROM python:3.10-alpine 
+
+# working dir
+WORKDIR /app 
+
+COPY Requirements.txt /app/
+
+RUN pip install --upgrade pip 
+RUN pip install --no-cache-dir -r Requirements.txt
+
+COPY . /app/
+
+
+EXPOSE 8000 
+
+CMD [ "python","manage.py", "runserver","0.0.0.0:8000" ]
+
+# commands
+# docker build -t messaging-app .
+# docker run -d -p 8000:8000 messaging-app
