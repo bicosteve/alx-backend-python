@@ -56,4 +56,14 @@
 
 	Nb: do not push your environment variables to github. Ensure they are in a .env file
 
+
+	# build:
+	docker compose up --build 
+
+	# build-detached:
+	docker compose up --build -d
+
+	# stop:
+	docker compose down
+
 ```
