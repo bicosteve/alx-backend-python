@@ -1,0 +1,40 @@
+apiVersion:  apps/v1
+kind: Deployment 
+metadata:
+  name: messaging-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: messaging-app-pod 
+  template:
+    metadata:
+      labels:
+        app: messaging-app-container
+    spec:
+      containers:
+        - name: messaging-app
+          image: bixoloo/messaging-app:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: db-secrets
+
+
+---
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: messaging-app-service
+spec:
+  selector:
+    app: messaging-app-pod
+  ports:
+   - protocol: TCP 
+     port: 8000 # service listens to this
+     targetPort: 8000  # the port the container exposes
+  type: ClusterIP
+
