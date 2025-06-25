@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e 
+echo "starting Minikube cluster"
+minikube start --driver=docker
+
+echo "Verying cluster status with kubectl"
+kubectl cluster-info || { echo "cluster not responding"; exit 1; }
+echo " Getting pods"
+kubectl get pods --namespace=default
+
+echo "Done. Local k8s running"

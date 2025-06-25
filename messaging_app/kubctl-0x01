@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e  # Exit on any error
+
+DEPLOYMENT_NAME="messaging-app-deployment"
+SERVICE_NAME="messaging-app-service"
+TARGET_PORT=8000
+
+echo "Scaling $DEPLOYMENT_NAME to 3 replicas..."
+kubectl scale deployment "$DEPLOYMENT_NAME" --replicas=3
+
+echo "Waiting for pods to be ready..."
+kubectl rollout status deployment "$DEPLOYMENT_NAME"
+
+echo "Verifying that 3 pods are running..."
+kubectl get pods -l app=messaging-app-pod
+
+echo "Port-forwarding $SERVICE_NAME on port $TARGET_PORT to localhost..."
+kubectl port-forward svc/"$SERVICE_NAME" $TARGET_PORT:$TARGET_PORT &
+PORT_FORWARD_PID=$!
+
+# Give it time to forward
+sleep 3  
+
+echo "Running load test with wrk..."
+wrk -t4 -c20 -d15s http://localhost:$TARGET_PORT/
+
+echo "Monitoring resource usage across pods..."
+kubectl top pods
+
+# Clean up
+echo "Stopping port forward..."
+kill $PORT_FORWARD_PID

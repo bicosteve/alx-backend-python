@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+DEPLOYMENT_NAME="django-blue"
+URL="http://localhost:8000/"
+DURATION=20  # seconds to test curl loop
+
+echo "Applying blue deployment update (v2.0)..."
+kubectl apply -f blue_deployment.yaml
+
+echo "Monitoring rollout..."
+kubectl rollout status deployment "$DEPLOYMENT_NAME"
+
+echo "Port-forwarding to access the app at localhost:8000..."
+kubectl port-forward svc/django-service 8000:8000 &
+PORT_PID=$!
+
+# Wait for port-forward to initialize
+sleep 3 
+
+echo "Sending test requests to check for downtime..."
+START_TIME=$(date +%s)
+END_TIME=$((START_TIME + DURATION))
+while [ $(date +%s) -lt $END_TIME ]; do
+  curl -s --max-time 2 "$URL" > /dev/null && echo -n "." || echo -n "x"
+  sleep 1
+done
+echo -e "\nTraffic test complete."
+
+echo "Verifying running pods..."
+kubectl get pods -l app=django -o wide
+
+echo "Cleaning up port-forward..."
+kill $PORT_PID
