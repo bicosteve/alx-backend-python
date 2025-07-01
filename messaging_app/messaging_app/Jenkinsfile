@@ -26,12 +26,13 @@ pipeline{
                     ).trim()
                 }
                 git credentialsId: 'github-creds', url:  'git@github.com:bicosteve/alx-backend-python.git'
+                echo 'Git branch: ${{ env.BRANCH_NAME}}'
             }
         }
 
         stage('Install Depenancies'){
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh 'pip3 install -r messaging-app/requirements.txt'
             }
         }
 
@@ -63,6 +64,11 @@ pipeline{
         }
 
         stage('Push to Docker Hub'){
+            when {
+                expression  {
+                    return env.BRANCH_NAME == 'main'
+                }
+            }
             steps {
                 withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS, usernameVariable: $DOCKER_USER, passwordVariable: $DOCKER_PASSWORD)]){
                     sh '''
