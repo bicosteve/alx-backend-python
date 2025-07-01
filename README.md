@@ -156,6 +156,26 @@ Repo:
     GitHub repository: alx-backend-python
     Directory: messaging_app
     File: messaging_app/.github/workflows/ci.yml
+```
+
+```bash
+4. Docker Image and github actions
+
+Objective: Build and Push Docker Image using GitHub Actions
+
+Instructions:
+
+    In dep.yaml file, Set up a GitHub Actions workflow that builds a Docker image for the messaging app.
+
+    Push the Docker image to Docker Hub
+
+    Use GitHub Actions’ secrets feature to store your Docker credentials securely
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/.github/workflows/dep.yml
 
 
 ```

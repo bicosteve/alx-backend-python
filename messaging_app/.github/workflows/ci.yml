@@ -32,7 +32,7 @@ jobs:
       MYSQL_USER: ${{ secrets.MYSQL_USER }}
       MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
       MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-      DJANGO_SETTINGS_MODULE: your_project.settings
+      DJANGO_SETTINGS_MODULE: messaging_app.settings
 
     steps:
       - name: Checkout code
@@ -61,7 +61,7 @@ jobs:
         run: pipenv run python manage.py migrate
 
       - name: Run tests
-        run: pipenv run pytest --ds=your_project.settings --junitxml=report.xml
+        run: pipenv run pytest --ds=messaging-app.settings --junitxml=report.xml
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
