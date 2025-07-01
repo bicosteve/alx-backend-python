@@ -96,5 +96,26 @@
 		GitHub repository: alx-backend-python
 		Directory: messaging_app
 		File: messaging_app/Jenkinsfile
+```
+
+```bash
+1. Build Docker image with Jenkins
+
+Objective: building a Docker image for your Django messaging app using Jenkins
+
+Instructions:
+
+    Extend the Jenkins Pipeline Script Jenkinsfile to add stages for building and pushing the Docker image
+
+    After updating the Jenkinsfile in your GitHub repository, go to the Jenkins dashboard and trigger the pipeline manually by clicking on Build Now.
+
+    Monitor the build logs to verify that the Docker image is built and pushed to Docker Hub successfully.
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/Jenkinsfile
+
 
 ```
