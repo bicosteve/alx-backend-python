@@ -136,6 +136,26 @@ Repo:
     GitHub repository: alx-backend-python
     Directory: messaging_app
     File: messaging_app/.github/workflows/ci.yml
+```
+
+```bash
+3. Code Quality Checks in GitHub Actions:
+
+Objective: Run Code Quality Checks in GitHub Actions
+
+Instructions:
+
+    Extend your GitHub Actions workflow to include a flake8 check for linting the Django project.
+
+    Fail the build if any linting errors are detected.
+
+    Add a step to generate code coverage reports and upload them as build artifacts.
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/.github/workflows/ci.yml
 
 
 ```
