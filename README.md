@@ -33,7 +33,7 @@
 
 ```
 
-```bash 
+```bash
 	1. Use Docker Compose for Multi-Container Setup
 
 	Objective: Learn how to manage multiple services using Docker Compose.
@@ -58,7 +58,7 @@
 
 
 	# build:
-	docker compose up --build 
+	docker compose up --build
 
 	# build-detached:
 	docker compose up --build -d
@@ -77,5 +77,24 @@
 
 	    Modify the docker-compose.yml file to add a volume for the MYSQL service, ensuring that the database data is persisted across container restarts.
 
+
+```
+
+## Jenkins Section
+
+```bash
+	0 Set up pipeline on Jenkins
+
+	Install the git plugin, Pipeline and ShiningPandaPlugin. Hint
+
+    Create a Jenkinsfile pipeline script that pulls the messaging app’s code from GitHub, installs dependencies, runs tests using pytest, and generates a report
+
+    Ensure to add Credentials for GitHub
+
+	Repo:
+
+		GitHub repository: alx-backend-python
+		Directory: messaging_app
+		File: messaging_app/Jenkinsfile
 
 ```

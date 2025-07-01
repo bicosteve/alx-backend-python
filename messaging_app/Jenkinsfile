@@ -1,0 +1,48 @@
+pipeline{
+    agent any 
+
+    tools {
+        python 'Python3'
+    }
+
+    environment {
+        PIPENV_VENV_IN_PROJECT = '1'
+    }
+
+    stages {
+        stage('Clone Repor'){
+            steps {
+                git credentialsId: 'github-creds', url:  'git@github.com:bicosteve/alx-backend-python.git'
+            }
+        }
+
+        stage('Install Pipenv'){
+            steps {
+                sh 'pip install --upgrade pip pipenv'
+            }
+        }
+
+        stage('Install Dependancies'){
+            steps {
+                // Loads env vars and install packages
+                sh '''
+                export $(grep -v "^#" .env | xargs) && pipenv install --dev
+                '''
+            }
+        }
+
+        stage('Run Tests'){
+            steps {
+                sh 'pipenv run pytest --junitxml=report.xml'
+            }
+        }
+
+        stage('Publish Report'){
+            steps {
+                junit 'report.xml'
+            }
+        }
+
+
+    }
+}
