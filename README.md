@@ -33,7 +33,7 @@
 
 ```
 
-```bash 
+```bash
 	1. Use Docker Compose for Multi-Container Setup
 
 	Objective: Learn how to manage multiple services using Docker Compose.
@@ -58,7 +58,7 @@
 
 
 	# build:
-	docker compose up --build 
+	docker compose up --build
 
 	# build-detached:
 	docker compose up --build -d
@@ -76,6 +76,106 @@
 	Instructions:
 
 	    Modify the docker-compose.yml file to add a volume for the MYSQL service, ensuring that the database data is persisted across container restarts.
+
+
+```
+
+## Jenkins Section
+
+```bash
+	0 Set up pipeline on Jenkins
+
+	Install the git plugin, Pipeline and ShiningPandaPlugin. Hint
+
+    Create a Jenkinsfile pipeline script that pulls the messaging app’s code from GitHub, installs dependencies, runs tests using pytest, and generates a report
+
+    Ensure to add Credentials for GitHub
+
+	Repo:
+
+		GitHub repository: alx-backend-python
+		Directory: messaging_app
+		File: messaging_app/Jenkinsfile
+```
+
+```bash
+1. Build Docker image with Jenkins
+
+Objective: building a Docker image for your Django messaging app using Jenkins
+
+Instructions:
+
+    Extend the Jenkins Pipeline Script Jenkinsfile to add stages for building and pushing the Docker image
+
+    After updating the Jenkinsfile in your GitHub repository, go to the Jenkins dashboard and trigger the pipeline manually by clicking on Build Now.
+
+    Monitor the build logs to verify that the Docker image is built and pushed to Docker Hub successfully.
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/Jenkinsfile
+```
+
+```bash
+2. Set Up a GitHub Actions Workflow for Testing
+
+Objective: Set up github actions for Testing
+
+Instructions:
+
+    Create a .github/workflows/ci.yml file in your messaging app’s repository.
+
+    Configure a GitHub Actions workflow that runs the Django tests on every push and pull request.
+
+    Ensure the workflow installs necessary dependencies and sets up a MySQL database for running tests (e.g., using services in GitHub Actions).
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/.github/workflows/ci.yml
+```
+
+```bash
+3. Code Quality Checks in GitHub Actions:
+
+Objective: Run Code Quality Checks in GitHub Actions
+
+Instructions:
+
+    Extend your GitHub Actions workflow to include a flake8 check for linting the Django project.
+
+    Fail the build if any linting errors are detected.
+
+    Add a step to generate code coverage reports and upload them as build artifacts.
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/.github/workflows/ci.yml
+```
+
+```bash
+4. Docker Image and github actions
+
+Objective: Build and Push Docker Image using GitHub Actions
+
+Instructions:
+
+    In dep.yaml file, Set up a GitHub Actions workflow that builds a Docker image for the messaging app.
+
+    Push the Docker image to Docker Hub
+
+    Use GitHub Actions’ secrets feature to store your Docker credentials securely
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/.github/workflows/dep.yml
 
 
 ```
