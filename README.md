@@ -116,6 +116,26 @@ Repo:
     GitHub repository: alx-backend-python
     Directory: messaging_app
     File: messaging_app/Jenkinsfile
+```
+
+```bash
+2. Set Up a GitHub Actions Workflow for Testing
+
+Objective: Set up github actions for Testing
+
+Instructions:
+
+    Create a .github/workflows/ci.yml file in your messaging app’s repository.
+
+    Configure a GitHub Actions workflow that runs the Django tests on every push and pull request.
+
+    Ensure the workflow installs necessary dependencies and sets up a MySQL database for running tests (e.g., using services in GitHub Actions).
+
+Repo:
+
+    GitHub repository: alx-backend-python
+    Directory: messaging_app
+    File: messaging_app/.github/workflows/ci.yml
 
 
 ```
