@@ -16,15 +16,22 @@ pipeline{
     }
 
     stages {
-        stage('Clone Repor'){
+        stage('Clone Repository'){
             steps {
+                checkout scm 
+                steps {
+                    env.BRANC_NAME = sh(
+                        script: 'git rev-parse --abbrev-ref HEAD',
+                        returnStdout: true 
+                    ).trim()
+                }
                 git credentialsId: 'github-creds', url:  'git@github.com:bicosteve/alx-backend-python.git'
             }
         }
 
-        stage('Install Pipenv'){
+        stage('Install Depenancies'){
             steps {
-                sh 'pip install --upgrade pip pipenv'
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
